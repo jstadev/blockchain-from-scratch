@@ -23,6 +23,29 @@ pub enum ClothesState {
     Tattered,
 }
 
+// 3 states for clothes
+// clean, dirty, wet
+// actions 3
+
+// wear, wash, dry
+// wear clean -> dirty
+// wear dirty -> dirty
+// wear wet -> dirty
+// wear tattered -> tattered
+
+// wash clean -> wet
+// wash dirty -> wet
+// wash wet -> wet
+// wash tattered -> tattered
+
+// dry clean -> clean
+// dry dirty -> dirty
+// dry wet -> clean
+// dry tattered -> tattered
+
+
+
+
 /// Something you can do with clothes
 pub enum ClothesAction {
     /// Wearing clothes decreases their life by 1 and makes them dirty.
