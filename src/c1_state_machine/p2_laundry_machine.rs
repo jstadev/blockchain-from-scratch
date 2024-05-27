@@ -43,6 +43,9 @@ pub enum ClothesState {
 // dry wet -> clean
 // dry tattered -> tattered
 
+// so we have 3 states and 3 actions
+// 3 * 3 = 9 possible transitions
+
 
 
 
@@ -63,7 +66,79 @@ impl StateMachine for ClothesMachine {
     type Transition = ClothesAction;
 
     fn next_state(starting_state: &ClothesState, t: &ClothesAction) -> ClothesState {
-        todo!("Exercise 3")
+        match (starting_state, t) {
+            // for the wear
+            (ClothesState::Clean(life), ClothesAction::Wear) => {
+                if *life > 1 {
+                    ClothesState::Dirty(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Dirty(life), ClothesAction::Wear) => {
+                if *life > 1 {
+                    ClothesState::Dirty(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Wet(life), ClothesAction::Wear) => {
+                if *life > 1 {
+                    ClothesState::Dirty(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Tattered, ClothesAction::Wear) => ClothesState::Tattered,
+
+            // for the wash 
+            (ClothesState::Clean(life), ClothesAction::Wash) => {
+                if *life > 1 {
+                    ClothesState::Wet(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Dirty(life), ClothesAction::Wash) => {
+                if *life > 1 {
+                    ClothesState::Wet(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Wet(life), ClothesAction::Wash) => {
+                if *life > 1 {
+                    ClothesState::Wet(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Tattered, ClothesAction::Wash) => ClothesState::Tattered,
+
+            // for the dry
+            (ClothesState::Clean(life), ClothesAction::Dry) => {
+                if *life > 1 {
+                    ClothesState::Clean(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Dirty(life), ClothesAction::Dry) => {
+                if *life > 1 {
+                    ClothesState::Dirty(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Wet(life), ClothesAction::Dry) => {
+                if *life > 1 {
+                    ClothesState::Clean(life - 1)
+                } else {
+                    ClothesState::Tattered
+                }
+            }
+            (ClothesState::Tattered, ClothesAction::Dry) => ClothesState::Tattered,
+        }
     }
 }
 
